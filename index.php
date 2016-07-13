@@ -48,7 +48,7 @@ Youtube  : https://www.youtube.com/channel/UCLGTGGY_KFCAtb11zhy6xHA
     		'chat_id' => $update->message->chat->id,
     		'text' => "Wa'alaikumussalaam Warahmatullahi Wabarakaatuh\n
 Inspirasi harian : $randomAyah\n
-Untuk daftar perintah silahkan ketik /help"
+Untuk mengetahui cara berinteraksi dengan Marbot YISC Al Azhar, silahkan ketik /help"
     	]);
 
     }
@@ -61,6 +61,7 @@ Untuk daftar perintah silahkan ketik /help"
 /salam - Dapatkan informasi terbaru dari YISC Al Azhar
 /beye - Berita dan Artikel Terbaru dari website www.yisc-alazhar.or.id
 /inspirasi - Inspirasi dari ayat suci Al Qur'an khusus untuk kamu
+/waktushalat - Jadwal Shalat hari ini untuk daerah Jakarta dan Sekitarnya
 /sosmed - Daftar Sosial Media YISC Al Azhar
 			"
 		]);
@@ -93,7 +94,18 @@ Untuk memulai, silahkan ketik /salam"
     }
     else if($update->message->text == '/inspirasi')
     {
-		$text = getRandomAyah();
+		$text = "Inspirasi Ayat Suci Al Qur'an\n";
+		$text .= getRandomAyah();
+
+    	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
+    	$response = $client->sendMessage([
+    		'chat_id' => $update->message->chat->id,
+    		'text' => $text
+    		]);
+    }
+    else if($update->message->text == '/waktushalat')
+    {
+		$text = getShalatTime();
 
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
@@ -117,20 +129,44 @@ Untuk memulai, silahkan ketik /salam"
 
 }
 
-function getRandomAyah(){
-	$rand = rand(1,6236); // random ayah from 1:1 - 114:7
-	
+function getApi($url){
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_URL, 'http://api.globalquran.com/ayah/'.$rand.'/id.indonesian?key=d1bdfe6421908ff4cfb71fd1e7630e0b');
+	curl_setopt($ch, CURLOPT_URL, $url);
 	$result = curl_exec($ch);
 	curl_close($ch);
+	
+	return $result;
+}
+
+function getShalatTime(){
+	$result = getApi('http://muslimsalat.com/jakarta.json?key=d9f9908ca4c7567ed473fb80dece7324');
+	$shalat = json_decode($result);
+	$waktu = $shalat['items'][0];
+	
+	$msg = "Waktu Shalat Jakarta dan Sekitarnya
+".date('j, d M Y')."\n
+Shubuh : ".$waktu['fajr']."
+Terbit : ".$waktu['shurooq']."
+Zhuhur : ".$waktu['dhuhr']."
+Ashar : ".$waktu['asr']."
+Maghrib : ".$waktu['maghrib']."
+Isya : ".$waktu['isha']."
+	";
+	
+	return $msg;
+}
+
+function getRandomAyah(){
+	$rand = rand(1,6236); // random ayah from 1:1 - 114:7
+	
+	$result = getApi('http://api.globalquran.com/ayah/'.$rand.'/id.indonesian?key=d1bdfe6421908ff4cfb71fd1e7630e0b');
 	
 	$data = json_decode($result,true);
 	$data = $data['quran']['id.indonesian'];
 	$line = array();
 	foreach($data as $id=>$val)
 		$line = $val;
-	return $line['verse'].' QS. '.$line['surah'].':'.$line['ayah'];
+	return $line['verse'].'\n[QS. '.$line['surah'].':'.$line['ayah'].']';
 }
