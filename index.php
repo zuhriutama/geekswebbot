@@ -31,21 +31,23 @@ try {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
         	'chat_id' => $update->message->chat->id,
-        	'text' => "Ngga mau ketinggalan dengan berbagai info dan update dari YISC Al Azhar? Follow aja nih : \n
-Facebook : http://facebook.com/yisc.alazhar\n
-Twitter  : http://twitter.com/yisc_alazhar\n
-Google+  : https://plus.google.com/103786599270861299742\n
+        	'text' => "Ngga mau ketinggalan dengan berbagai info dan update dari YISC Al Azhar? Follow aja nih :
+Facebook : http://facebook.com/yisc.alazhar
+Twitter  : http://twitter.com/yisc_alazhar
+Google+  : https://plus.google.com/103786599270861299742
 Youtube  : https://www.youtube.com/channel/UCLGTGGY_KFCAtb11zhy6xHA
 			"
      	]);
     }
     else if($update->message->text == '/salam')
     {
+		$randomAyah = getRandomAyah();
+		
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
     		'chat_id' => $update->message->chat->id,
-    		'text' => "Wa'alaikumussalaam Warahmatullahi Wabarakaatuh \n
-Semoga Allah SWT senantiasa melimpahkan rahmat dan karunia-Nya kepada kita semua dalam menjalankan aktivitas sehari-hari, Amiin. \n
+    		'text' => "Wa'alaikumussalaam Warahmatullahi Wabarakaatuh\n
+Inspirasi harian : $randomAyah\n
 Untuk daftar perintah silahkan ketik /help"
     	]);
 
@@ -55,10 +57,10 @@ Untuk daftar perintah silahkan ketik /help"
 		$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
 		$response = $client->sendMessage([
 			'chat_id' => $update->message->chat->id,
-			'text' => "Daftar Perintah Marbot YISC Al Azhar\n
-/salam - Dapatkan informasi terbaru dari YISC Al Azhar\n
-/beye - Berita dan Artikel Terbaru dari website www.yisc-alazhar.or.id\n
-/inspirasi - Inspirasi dari ayat suci Al Qur'an khusus untuk kamu\n
+			'text' => "Daftar Perintah Marbot YISC Al Azhar
+/salam - Dapatkan informasi terbaru dari YISC Al Azhar
+/beye - Berita dan Artikel Terbaru dari website www.yisc-alazhar.or.id
+/inspirasi - Inspirasi dari ayat suci Al Qur'an khusus untuk kamu
 /sosmed - Daftar Sosial Media YISC Al Azhar
 			"
 		]);
@@ -84,27 +86,14 @@ Untuk daftar perintah silahkan ketik /help"
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
     		'chat_id' => $update->message->chat->id,
-    		'text' => "Assalaamu'alaikum Warahmatullahi Wabarakaatuh \n
-Perkenalkan saya adalah Marbot YISC Al Azhar yang akan membantu kamu mendapatkan informasi terbaru seputar YISC Al Azhar. \n
+    		'text' => "Assalaamu'alaikum Warahmatullahi Wabarakaatuh
+Perkenalkan saya adalah Marbot YISC Al Azhar yang akan membantu kamu mendapatkan informasi terbaru seputar YISC Al Azhar.
 Untuk memulai, silahkan ketik /salam"
     		]);
     }
     else if($update->message->text == '/inspirasi')
     {
-		$rand = rand(1,6236);
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_URL, 'http://api.globalquran.com/ayah/'.$rand.'/id.indonesian?key=d1bdfe6421908ff4cfb71fd1e7630e0b');
-		$result = curl_exec($ch);
-		curl_close($ch);
-		
-		$data = json_decode($result,true);
-		$data = $data['quran']['id.indonesian'];
-		$line = array();
-		foreach($data as $id=>$val)
-			$line = $val;
-		$text = $line['verse'].' QS. '.$line['surah'].':'.$line['ayah'];
+		$text = getRandomAyah();
 
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
@@ -126,4 +115,22 @@ Untuk memulai, silahkan ketik /salam"
     //echo error message ot log it
     //echo $e->getMessage();
 
+}
+
+function getRandomAyah(){
+	$rand = rand(1,6236); // random ayah from 1:1 - 114:7
+	
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_URL, 'http://api.globalquran.com/ayah/'.$rand.'/id.indonesian?key=d1bdfe6421908ff4cfb71fd1e7630e0b');
+	$result = curl_exec($ch);
+	curl_close($ch);
+	
+	$data = json_decode($result,true);
+	$data = $data['quran']['id.indonesian'];
+	$line = array();
+	foreach($data as $id=>$val)
+		$line = $val;
+	return $line['verse'].' QS. '.$line['surah'].':'.$line['ayah'];
 }
