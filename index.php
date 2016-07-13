@@ -105,7 +105,7 @@ Untuk memulai, silahkan ketik /salam"
     }
     else if($update->message->text == '/waktushalat')
     {
-		$text = 'Underconstruction'; //getShalatTime();
+		$text = getShalatTime();
 
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
@@ -145,14 +145,13 @@ function getShalatTime(){
 	$shalat = json_decode($result);
 	$waktu = $shalat['items'][0];
 	
-	$msg = "Waktu Shalat Jakarta dan Sekitarnya
-".date('j, d M Y')."\n
-Shubuh : ".$waktu['fajr']."
-Terbit : ".$waktu['shurooq']."
-Zhuhur : ".$waktu['dhuhr']."
-Ashar : ".$waktu['asr']."
-Maghrib : ".$waktu['maghrib']."
-Isya : ".$waktu['isha'];
+	$msg = "Waktu Shalat Jakarta dan Sekitarnya\n".date('j, d M Y')."\n";
+	$msg .= "Shubuh  : ".$waktu['fajr']."\n";
+	$msg .= "Terbit  : ".$waktu['shurooq']."\n";
+	$msg .= "Zhuhur  : ".$waktu['dhuhr']."\n";
+	$msg .= "Ashar   : ".$waktu['asr']."\n";
+	$msg .= "Maghrib : ".$waktu['maghrib']."\n";
+	$msg .= "Isya    : ".$waktu['isha'];
 	
 	return $msg;
 }
