@@ -19,8 +19,8 @@
 */
 require 'vendor/autoload.php';
 
-$client = new Zelenin\Telegram\Bot\Api(''); // Set your access token
-$url = ''; // URL RSS feed
+$client = new Zelenin\Telegram\Bot\Api('188202276:AAEZOAis8JyBQ8cQEtssKtzIH-9CEdCJPHg'); // Set your access token
+$url = 'http://zuhriutama.com/feed'; // URL RSS feed
 $update = json_decode(file_get_contents('php://input'));
 
 //your app
@@ -31,7 +31,7 @@ try {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
         	'chat_id' => $update->message->chat->id,
-        	'text' => "You can send email to : Kasra@madadipouya.com"
+        	'text' => "You can send email to : hallo@zuhriutama.com"
      	]);
     }
     else if($update->message->text == '/help')
