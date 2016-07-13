@@ -6,6 +6,7 @@ curl_setopt($ch, CURLOPT_URL, 'http://api.globalquran.com/ayah/1:1/id.indonesian
 $result = curl_exec($ch);
 curl_close($ch);
 $data = json_decode($result,true);
+$quran = json_decode($result);
 var_dump($data);
-echo "<br/>ayat quran : ";
+echo "<br/>ayat quran : ".$quran->id.indonesian['verse'];
 ?>
