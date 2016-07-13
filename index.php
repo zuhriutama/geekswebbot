@@ -32,10 +32,10 @@ try {
     	$response = $client->sendMessage([
         	'chat_id' => $update->message->chat->id,
         	'text' => "Ngga mau ketinggalan dengan berbagai info dan update dari YISC Al Azhar? Follow aja nih : \n
-			Facebook : http://facebook.com/yisc.alazhar\n
-			Twitter  : http://twitter.com/yisc_alazhar\n
-			Google+  : https://plus.google.com/103786599270861299742\n
-			Youtube  : https://www.youtube.com/channel/UCLGTGGY_KFCAtb11zhy6xHA
+Facebook : http://facebook.com/yisc.alazhar\n
+Twitter  : http://twitter.com/yisc_alazhar\n
+Google+  : https://plus.google.com/103786599270861299742\n
+Youtube  : https://www.youtube.com/channel/UCLGTGGY_KFCAtb11zhy6xHA
 			"
      	]);
     }
@@ -45,8 +45,8 @@ try {
     	$response = $client->sendMessage([
     		'chat_id' => $update->message->chat->id,
     		'text' => "Wa'alaikumussalaam Warahmatullahi Wabarakaatuh \n
-			Semoga Allah SWT senantiasa melimpahkan rahmat dan karunia-Nya kepada kita semua dalam menjalankan aktivitas sehari-hari, Amiin. \n
-			Untuk daftar perintah silahkan ketik /help"
+Semoga Allah SWT senantiasa melimpahkan rahmat dan karunia-Nya kepada kita semua dalam menjalankan aktivitas sehari-hari, Amiin. \n
+Untuk daftar perintah silahkan ketik /help"
     	]);
 
     }
@@ -56,9 +56,10 @@ try {
 		$response = $client->sendMessage([
 			'chat_id' => $update->message->chat->id,
 			'text' => "Daftar Perintah Marbot YISC Al Azhar\n
-			/salam - Dapatkan informasi terbaru dari YISC Al Azhar
-			/beye - Berita dan Artikel Terbaru dari website www.yisc-alazhar.or.id
-			/sosmed - Daftar Sosial Media YISC Al Azhar
+/salam - Dapatkan informasi terbaru dari YISC Al Azhar\n
+/beye - Berita dan Artikel Terbaru dari website www.yisc-alazhar.or.id\n
+/inspirasi - Inspirasi dari ayat suci Al Qur'an khusus untuk kamu\n
+/sosmed - Daftar Sosial Media YISC Al Azhar
 			"
 		]);
     }
@@ -84,8 +85,31 @@ try {
     	$response = $client->sendMessage([
     		'chat_id' => $update->message->chat->id,
     		'text' => "Assalaamu'alaikum Warahmatullahi Wabarakaatuh \n
-			Perkenalkan saya adalah Marbot YISC Al Azhar yang akan membantu kamu mendapatkan informasi terbaru seputar YISC Al Azhar. \n
-			Untuk memulai, silahkan ketik /salam"
+Perkenalkan saya adalah Marbot YISC Al Azhar yang akan membantu kamu mendapatkan informasi terbaru seputar YISC Al Azhar. \n
+Untuk memulai, silahkan ketik /salam"
+    		]);
+    }
+    else if($update->message->text == '/inspirasi')
+    {
+		$rand = rand(1,6236);
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_URL, 'http://api.globalquran.com/ayah/'.$rand.'/id.indonesian?key=d1bdfe6421908ff4cfb71fd1e7630e0b');
+		$result = curl_exec($ch);
+		curl_close($ch);
+		
+		$data = json_decode($result,true);
+		$data = $data['quran']['id.indonesian'];
+		$line = array();
+		foreach($data as $id=>$val)
+			$line = $val;
+		$text = $line['verse'].' QS. '.$line['surah'].':'.$line['ayah'];
+
+    	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
+    	$response = $client->sendMessage([
+    		'chat_id' => $update->message->chat->id,
+    		'text' => $text
     		]);
     }
     else
