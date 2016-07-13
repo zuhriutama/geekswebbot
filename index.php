@@ -105,7 +105,7 @@ Untuk memulai, silahkan ketik /salam"
     }
     else if($update->message->text == '/waktushalat')
     {
-		$text = getShalatTime();
+		$text = 'Underconstruction'; //getShalatTime();
 
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
