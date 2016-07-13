@@ -61,7 +61,6 @@ Untuk mengetahui cara berinteraksi dengan Marbot YISC Al Azhar, silahkan ketik /
 /salam - Dapatkan informasi terbaru dari YISC Al Azhar
 /beye - Berita dan Artikel Terbaru dari website www.yisc-alazhar.or.id
 /inspirasi - Inspirasi dari ayat suci Al Qur'an khusus untuk kamu
-/waktushalat - Jadwal Shalat hari ini untuk daerah Jakarta dan Sekitarnya
 /sosmed - Daftar Sosial Media YISC Al Azhar
 			"
 		]);
@@ -105,7 +104,7 @@ Untuk memulai, silahkan ketik /salam"
     }
     else if($update->message->text == '/waktushalat')
     {
-		$text = getShalatTime();
+		$text = "'afwan, fitur ini belum tersedia";//getShalatTime();
 
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
