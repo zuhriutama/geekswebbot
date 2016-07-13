@@ -19,54 +19,81 @@
 */
 require 'vendor/autoload.php';
 
-$client = new Zelenin\Telegram\Bot\Api('188202276:AAEZOAis8JyBQ8cQEtssKtzIH-9CEdCJPHg'); // Set your access token
-$url = 'http://zuhriutama.com/feed'; // URL RSS feed
+$client = new Zelenin\Telegram\Bot\Api('214939698:AAEGmpZkp_81hnh6xcfImgJzB49xTFqw1eY'); // Set your access token
+$url = 'http://yisc-alazhar.or.id/feed'; // URL RSS feed
 $update = json_decode(file_get_contents('php://input'));
 
 //your app
 try {
 
-    if($update->message->text == '/email')
+    if($update->message->text == '/sosmed')
     {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
         	'chat_id' => $update->message->chat->id,
-        	'text' => "You can send email to : hallo@zuhriutama.com"
+        	'text' => "Ngga mau ketinggalan dengan berbagai info dan update dari YISC Al Azhar? Follow aja nih : \n
+			Facebook : http://facebook.com/yisc.alazhar\n
+			Twitter  : http://twitter.com/yisc_alazhar\n
+			Google+  : https://plus.google.com/103786599270861299742\n
+			Youtube  : https://www.youtube.com/channel/UCLGTGGY_KFCAtb11zhy6xHA
+			"
      	]);
     }
-    else if($update->message->text == '/help')
+    else if($update->message->text == '/salam')
     {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
     		'chat_id' => $update->message->chat->id,
-    		'text' => "List of commands :\n /email -> Get email address of the owner \n /latest -> Get latest posts of the blog 
-    		/help -> Shows list of available commands"
-    		]);
+    		'text' => "Wa'alaikumussalaam Warahmatullahi Wabarakaatuh \n
+			Semoga Allah SWT senantiasa melimpahkan rahmat dan karunia-Nya kepada kita semua dalam menjalankan aktivitas sehari-hari, Amiin. \n
+			Untuk daftar perintah silahkan ketik /help"
+    	]);
 
     }
-    else if($update->message->text == '/latest')
+    else if($update->message->text == '/help')
     {
-    		Feed::$cacheDir 	= __DIR__ . '/cache';
-			Feed::$cacheExpire 	= '5 hours';
-			$rss 		= Feed::loadRss($url);
-			$items 		= $rss->item;
-			$lastitem 	= $items[0];
-			$lastlink 	= $lastitem->link;
-			$lasttitle 	= $lastitem->title;
-			$message = $lasttitle . " \n ". $lastlink;
-			$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
-			$response = $client->sendMessage([
-					'chat_id' => $update->message->chat->id,
-					'text' => $message
-				]);
-
+		$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
+		$response = $client->sendMessage([
+			'chat_id' => $update->message->chat->id,
+			'text' => "Daftar Perintah Marbot YISC Al Azhar\n
+			/salam - Dapatkan informasi terbaru dari YISC Al Azhar
+			/beye - Berita dan Artikel Terbaru dari website www.yisc-alazhar.or.id
+			/sosmed - Daftar Sosial Media YISC Al Azhar
+			"
+		]);
+    }
+    else if($update->message->text == '/beye')
+    {
+		Feed::$cacheDir 	= __DIR__ . '/cache';
+		Feed::$cacheExpire 	= '5 hours';
+		$rss 		= Feed::loadRss($url);
+		$items 		= $rss->item;
+		$lastitem 	= $items[0];
+		$lastlink 	= $lastitem->link;
+		$lasttitle 	= $lastitem->title;
+		$message = $lasttitle . " \n ". $lastlink;
+		$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
+		$response = $client->sendMessage([
+				'chat_id' => $update->message->chat->id,
+				'text' => $message
+		]);
+    }
+    else if($update->message->text == '/start')
+    {
+    	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
+    	$response = $client->sendMessage([
+    		'chat_id' => $update->message->chat->id,
+    		'text' => "Assalaamu'alaikum Warahmatullahi Wabarakaatuh \n
+			Perkenalkan saya adalah Marbot YISC Al Azhar yang akan membantu kamu mendapatkan informasi terbaru seputar YISC Al Azhar. \n
+			Untuk memulai, silahkan ketik /salam"
+    		]);
     }
     else
     {
     	$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
     	$response = $client->sendMessage([
     		'chat_id' => $update->message->chat->id,
-    		'text' => "Invalid command, please use /help to get list of available commands"
+    		'text' => "Hai... untuk daftar perintah, silahkan ketik /help"
     		]);
     }
 
