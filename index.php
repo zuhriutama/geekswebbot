@@ -152,8 +152,7 @@ Terbit : ".$waktu['shurooq']."
 Zhuhur : ".$waktu['dhuhr']."
 Ashar : ".$waktu['asr']."
 Maghrib : ".$waktu['maghrib']."
-Isya : ".$waktu['isha']."
-	";
+Isya : ".$waktu['isha'];
 	
 	return $msg;
 }
@@ -168,5 +167,5 @@ function getRandomAyah(){
 	$line = array();
 	foreach($data as $id=>$val)
 		$line = $val;
-	return $line['verse'].'\n[QS. '.$line['surah'].':'.$line['ayah'].']';
+	return $line['verse']."\n[QS. ".$line['surah'].":".$line['ayah']."]";
 }
