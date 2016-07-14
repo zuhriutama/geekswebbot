@@ -75,8 +75,19 @@ try {
 		break;
 		case "/waktushalat":
 			$text = "'afwan, fitur ini belum tersedia";//getShalatTime();
-
-			sendMessage($client, $update->message, $text);
+			
+			$inline_keyboard['InlineKeyboardMarkup'] = [
+			'Test',
+			'Test 2',
+			'Test 3'
+			];
+			
+			$response = $client->sendChatAction(['chat_id' => $message->chat->id, 'action' => 'typing']);
+			$response = $client->sendMessage([
+				'chat_id' => $message->chat->id,
+				'text' => $text,
+				'reply_markup' => $inline_keyboard
+			]);
 		break;
 		default:
 			$text = "Hai... untuk daftar perintah, silahkan ketik /help";
