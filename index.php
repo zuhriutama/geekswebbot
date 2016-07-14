@@ -76,20 +76,25 @@ try {
 		case "/waktushalat":
 			$text = "'afwan, fitur ini belum tersedia";//getShalatTime();
 			
-			$inline_keyboard['InlineKeyboardMarkup'] = [
-			'Test',
-			'Test 2',
-			'Test 3'
-			];
-			
 			$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
-			$response = $client->sendMessage([
-				'chat_id' => $update->message->chat->id,
-				'text' => $text,
-				'reply_markup' => array(
-						'keyboard' => array(array('Hello', 'Hi')),
-						'one_time_keyboard' => true,
-						'resize_keyboard' => true)
+			
+			$keyboard = [
+				['7', '8', '9'],
+				['4', '5', '6'],
+				['1', '2', '3'],
+					 ['0']
+			];
+
+			$reply_markup = $telegram->replyKeyboardMarkup([
+			  'keyboard' => $keyboard, 
+			  'resize_keyboard' => true, 
+			  'one_time_keyboard' => true
+			]);
+
+			$response = $telegram->sendMessage([
+			  'chat_id' => $update->message->chat->id, 
+			  'text' => $text,
+			  'reply_markup' => $reply_markup
 			]);
 		break;
 		default:
