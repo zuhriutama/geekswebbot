@@ -14,7 +14,7 @@ function getApi($url){
 function sendMessage($client, $message, $text){
 	$response = $client->sendChatAction(['chat_id' => $message->chat->id, 'action' => 'typing']);
 	$response = $client->sendMessage([
-		'chat_id' => $update->message->chat->id,
+		'chat_id' => $message->chat->id,
 		'text' => $text
 	]);
 }
