@@ -86,7 +86,10 @@ try {
 			$response = $client->sendMessage([
 				'chat_id' => $update->message->chat->id,
 				'text' => $text,
-				'reply_markup' => $inline_keyboard
+				'reply_markup' => array(
+						'keyboard' => array(array('Hello', 'Hi')),
+						'one_time_keyboard' => true,
+						'resize_keyboard' => true)
 			]);
 		break;
 		default:
