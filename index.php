@@ -82,9 +82,9 @@ try {
 			'Test 3'
 			];
 			
-			$response = $client->sendChatAction(['chat_id' => $message->chat->id, 'action' => 'typing']);
+			$response = $client->sendChatAction(['chat_id' => $update->message->chat->id, 'action' => 'typing']);
 			$response = $client->sendMessage([
-				'chat_id' => $message->chat->id,
+				'chat_id' => $update->message->chat->id,
 				'text' => $text,
 				'reply_markup' => $inline_keyboard
 			]);
