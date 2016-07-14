@@ -27,7 +27,7 @@ $update = json_decode(file_get_contents('php://input'));
 //your app
 try {
 	switch($update->message->text){
-		case '/sosmed':
+		case "/sosmed":
 			$text = "Ngga mau ketinggalan dengan berbagai info dan update dari YISC Al Azhar? Follow aja nih :\n";
 			$text .= "Facebook : http://facebook.com/yisc.alazhar\n";
 			$text .= "Twitter  : http://twitter.com/yisc_alazhar\n";
@@ -35,14 +35,14 @@ try {
 			$text .= "Youtube  : https://www.youtube.com/channel/UCLGTGGY_KFCAtb11zhy6xHA";
 			sendMessage($client, $update->message, $text);
 		break;
-		case '/salam':
+		case "/salam":
 			$randomAyah = getRandomAyah();
 			$text = "Wa'alaikumussalaam Warahmatullahi Wabarakaatuh\n";
 			$text .= "Inspirasi harian : $randomAyah\n";
 			$text .= "Untuk mengetahui cara berinteraksi dengan Marbot YISC Al Azhar, silahkan ketik /help";
 			sendMessage($client, $update->message, $text);
 		break;
-		case '/help':
+		case "/help":
 			$text = "Daftar Perintah Marbot YISC Al Azhar\n";
 			$text .= "/salam - Dapatkan informasi terbaru dari YISC Al Azhar\n";
 			$text .= "/beye - Berita dan Artikel Terbaru dari website www.yisc-alazhar.or.id\n";
@@ -50,7 +50,7 @@ try {
 			$text .= "/sosmed - Daftar Sosial Media YISC Al Azhar\n";
 			sendMessage($client, $update->message, $text);
 		break;
-		case '/beye':
+		case "/beye":
 			Feed::$cacheDir 	= __DIR__ . '/cache';
 			Feed::$cacheExpire 	= '5 hours';
 			$rss 		= Feed::loadRss(URL_FEED);
@@ -61,19 +61,19 @@ try {
 			$text = $lasttitle . " \n ". $lastlink;
 			sendMessage($client, $update->message, $text);
 		break;
-		case '/help':
+		case "/start":
 			$text = "Assalaamu'alaikum Warahmatullahi Wabarakaatuh\n";
 			$text = "Perkenalkan saya adalah Marbot YISC Al Azhar yang akan membantu kamu mendapatkan informasi terbaru seputar YISC Al Azhar.\n";
 			$text = "Untuk memulai, silahkan ketik /salam";
 			sendMessage($client, $update->message, $text);
 		break;
-		case '/inspirasi':
+		case "/inspirasi":
 			$text = "Inspirasi Ayat Suci Al Qur'an\n";
 			$text .= getRandomAyah();
 
 			sendMessage($client, $update->message, $text);
 		break;
-		case '/waktushalat':
+		case "/waktushalat":
 			$text = "'afwan, fitur ini belum tersedia";//getShalatTime();
 
 			sendMessage($client, $update->message, $text);
