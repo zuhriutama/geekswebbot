@@ -66,9 +66,8 @@ try {
 			$text = "Perkenalkan saya adalah Marbot YISC Al Azhar yang akan membantu kamu mendapatkan informasi terbaru seputar YISC Al Azhar.\n";
 			$text = "Untuk memulai, silahkan ketik /salam";
 			sendMessage($client, $update->message, $text);
-		}
-		else if($update->message->text == '/inspirasi')
-		{
+		break;
+		case '/inspirasi':
 			$text = "Inspirasi Ayat Suci Al Qur'an\n";
 			$text .= getRandomAyah();
 
